@@ -18,6 +18,10 @@ class acf_location_nav_menu extends acf_location
 
 	function __construct()
 	{
+		if ( empty( $this->plugin_dir ) ) {
+			$this->plugin_dir = trailingslashit( str_replace( '\\', '/', dirname( __FILE__ ) ) );
+			$this->plugin_url = site_url( str_replace( trailingslashit( str_replace( '\\', '/', ABSPATH ) ), '', $this->plugin_dir ) );
+		}
 		
 		add_filter( 'acf/location/rule_match/menu', array( $this, 'acf_location_nav_menu_rule_matches' ), 1, 3 );
 		add_filter( 'acf/location/rule_types', array( $this, 'acf_location_nav_menu_rule_type' ), 1, 1 );
@@ -25,9 +29,9 @@ class acf_location_nav_menu extends acf_location
 		
 		add_action('acf/field_group/admin_head', array( $this, 'admin_head' ), 0, 0 );
 		
-		wp_register_style( 'acf-location-nav-menu', plugin_dir_url( __FILE__ ).'css/acf-location-nav-menu.css' );
-		wp_register_script( 'google-map-fix-randering', plugin_dir_url( __FILE__ ).'js/google.map.fix.randering.js', array( 'jquery' ) );
-		wp_register_script( 'acf-setup-fields-in-right-level', plugin_dir_url( __FILE__ ).'js/acf.setup.fields.in.right.level.js', array( 'jquery' ) );
+		wp_register_style( 'acf-location-nav-menu', $this->plugin_url.'css/acf-location-nav-menu.css' );
+		wp_register_script( 'google-map-fix-randering', $this->plugin_url.'js/google.map.fix.randering.js', array( 'jquery' ) );
+		wp_register_script( 'acf-setup-fields-in-right-level', $this->plugin_url.'js/acf.setup.fields.in.right.level.js', array( 'jquery' ) );
 		
 
 	}
